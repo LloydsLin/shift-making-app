@@ -1,106 +1,173 @@
-# Shift booking mock API
+# Shift Booking Application
 
-## Shift data model
+A React Native mobile application for booking and managing work shifts across Southeast Asian cities. The app allows users to browse available shifts, book them, manage their booked shifts, and filter by city locations.
 
-* `id`: UUID, a unique identifier
-* `area`: String, an identifier for an area, one of: 'Helsinki', 'Tampere', 'Turku'
-* `booked`: Boolean, true if booked, false if not booked
-* `startTime`: Int, Unix epoch timestamp, the starting time for the shift
-* `endTime`: Int, Unix epoch timestamp, the ending time for the shift
+## Features according to requirements
 
-## End-points
+### Available Shifts
+- Browse all available work shifts across Southeast Asia
+- Filter shifts by city using an intuitive dropdown menu
+- View shifts grouped by date for easy planning
+- See shift details including time, duration, location, and pay rate
+- Book available shifts with one tap
 
-All end-points implement parameter validation and error handling.
+### My Shifts
+- View all your booked shifts in chronological order
+- Shifts organized by date (Today, Tomorrow, Future dates)
+- Cancel shifts when needed with confirmation dialog
+- Track total earnings from booked shifts
 
-### `GET /shifts`
+### Cities Covered
+- 🇹🇭 **Bangkok, Thailand**
+- 🇮🇩 **Jakarta, Indonesia** 
+- 🇸🇬 **Singapore**
+- 🇵🇭 **Manila, Philippines**
+- 🇲🇾 **Kuala Lumpur, Malaysia**
+- 🇻🇳 **Hanoi, Vietnam**
+- 🇰🇭 **Phnom Penh, Cambodia**
+- 🇱🇦 **Vientiane, Laos**
+- 🇲🇲 **Yangon, Myanmar**
+- 🇧🇳 **Bandar Seri Begawan, Brunei**
 
-> Returns all shifts
+## Let's Start
 
-Example:
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
+- Expo CLI or React Native CLI
+- Android Studio/Xcode for device testing
+- A smartphone or emulator for testing
 
-`GET /shifts`
+### Installation
 
-```json
-[
-  {
-    "id": "95a2aaca-bab8-4504-8646-f75b325ec0e7",
-    "booked": false,
-    "area": "Helsinki",
-    "startTime": 1523610000000,
-    "endTime": 1523617200000
-  },
-  {
-    "id": "001e40e5-05dc-4b9d-bdc5-cae63f651970",
-    "booked": true,
-    "area": "Tampere",
-    "startTime": 1523602800000,
-    "endTime": 1523610000000
-  }
-]
+1. **Clone or download the project**
+   ```bash
+   cd react-native-assignment
+   ```
+
+2. **Install API dependencies**
+   ```bash
+   cd api
+   npm install
+   ```
+
+3. **Install client dependencies**
+   ```bash
+   cd ../client
+   npm install
+   ```
+
+4. **Update API URL**
+   - Open `client/App.js`
+   - Update the `API_BASE_URL` constant with your local IP address:
+     ```javascript
+     const API_BASE_URL = 'http://YOUR_LOCAL_IP:3000';
+     ```
+   - Find your IP with `ipconfig` (Windows) or `ifconfig` (Mac/Linux)
+
+### Running the Application
+
+1. **Start the API server**
+   ```bash
+   cd api
+   npm start
+   # Server will run on http://localhost:3000
+   ```
+
+2. **Start the React Native app**
+   ```bash
+   cd client
+   npx expo start
+   # or
+   npm start
+   ```
+
+3. **Run on device**
+   - Scan QR code with Expo Go app (iOS/Android)
+   - Or press `a` for Android emulator, `i` for iOS simulator
+
+## 📱 App Structure
+
+```
+react-native-assignment/
+├── api/                    # Backend API server
+│   ├── index.js           # Main server file with routes
+│   ├── package.json       # API dependencies
+│   └── README.md          # API documentation
+├── client/                # React Native frontend
+│   ├── App.js            # Main app component
+│   ├── package.json      # Client dependencies
+│   └── assets/           # App icons and images
+├── assets/               # Design assets
+└── design-spec.pdf      # UI/UX design specifications
 ```
 
-### `GET /shifts/{id}`
+## 🛠️ API Endpoints
 
-> Returns a single shift by ID
+### Available Shifts
+- `GET /shifts` - Get all available shifts
+- `GET /shifts?city={cityName}` - Get shifts filtered by city
 
-Example:
+### Booked Shifts
+- `GET /shifts/booked` - Get all booked shifts
 
-`GET /shifts/95a2aaca-bab8-4504-8646-f75b325ec0e7`
+### Shift Actions
+- `POST /shifts/{id}/book` - Book a specific shift
+- `POST /shifts/{id}/cancel` - Cancel a booked shift
 
-```json
+##  Data Structure
+
+### Shift Object
+```javascript
 {
-  "id": "95a2aaca-bab8-4504-8646-f75b325ec0e7",
-  "booked": false,
-  "area": "Helsinki",
-  "startTime": 1523610000000,
-  "endTime": 1523617200000
+  id: string,           // Unique shift identifier
+  startTime: string,    // ISO datetime string
+  endTime: string,      // ISO datetime string  
+  area: string,         // City name
+  hourlyRate: number,   // Pay rate per hour
+  booked: boolean       // Booking status
 }
 ```
 
-### `POST /shifts/{id}/book`
+## 🎨 UI Components
 
-> Books a shift by ID
+### Main Navigation
+- **Tab Navigation** Switch between Available Shifts and My Shifts
+- **City Filter** Dropdown to filter shifts by Southeast Asian cities
+- **Pull to Refresh** Refresh data on both screens
 
-__Notes__:
-* Already booked shifts cannot be booked
-* Already started shifts cannot be booked
-* Shifts with overlapping times cannot be booked
+### Shift Cards
+- **Time Display** Start and end times in 24-hour format
+- **Pay Calculation** Automatic calculation based on duration and hourly rate
+- **Action Buttons** Book (green) or Cancel (red) buttons
+- **Status Indicators** Visual indicators for booked shifts
 
-Example:
+### Date Grouping
+- Shifts automatically grouped by date
+- Chronological ordering within each date
+- Clean date headers with day names
 
-`POST /shifts/95a2aaca-bab8-4504-8646-f75b325ec0e7/book`
+##  Key Metrics
 
-```json
-{
-  "id": "95a2aaca-bab8-4504-8646-f75b325ec0e7",
-  "booked": true,
-  "area": "Helsinki",
-  "startTime": 1523610000000,
-  "endTime": 1523617200000
-}
+- **50+ Available Shifts** across 10 Southeast Asian capitals
+- **Dynamic Pricing** €25-42 per hour based on shift type
+- **Premium Rates** Higher pay for weekend and night shifts
+- **Multi-city Coverage** Comprehensive regional coverage
+
+## Deployment
+
+### Building for Production
+
+**Android:**
+```bash
+cd client
+expo build:android
+# or for standalone
+expo build:android --type apk
 ```
 
-### `POST /shifts/{id}/cancel`
-
-> Cancels a shift by ID
-
-__Notes__:
-* Already cancelled/non-booked shifts cannot be cancelled
-
-Example:
-
-`POST /shifts/95a2aaca-bab8-4504-8646-f75b325ec0e7/cancel`
-
-```json
-{
-  "id": "95a2aaca-bab8-4504-8646-f75b325ec0e7",
-  "booked": false,
-  "area": "Helsinki",
-  "startTime": 1523610000000,
-  "endTime": 1523617200000
-}
+**iOS:**
+```bash
+cd client  
+expo build:ios
 ```
-
----
-
-Bugs in the API? Please report any bugs with a GitHub issue.

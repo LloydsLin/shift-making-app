@@ -1,8 +1,8 @@
 import Hapi from 'hapi';
 
 const server = new Hapi.Server({
-  host: '127.0.0.1',
-  port: '8080',
+  host: '192.168.1.133',
+  port: '8081',
   routes: {
     cors: { origin: 'ignore' },
   },
@@ -10,7 +10,7 @@ const server = new Hapi.Server({
 
 async function main() {
   await server.register([{
-    plugin: require('./shifts-mock-api'),
+    plugin: require('.'),
     routes: { prefix: '/shifts' },
   }]);
 
