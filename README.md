@@ -86,7 +86,7 @@ A React Native mobile application for booking and managing work shifts across So
    - Scan QR code with Expo Go app (iOS/Android)
    - Or press `a` for Android emulator, `i` for iOS simulator
 
-## 📱 App Structure
+##  App Structure
 
 ```
 react-native-assignment/
@@ -102,7 +102,7 @@ react-native-assignment/
 └── design-spec.pdf      # UI/UX design specifications
 ```
 
-## 🛠️ API Endpoints
+##  API Endpoints
 
 ### Available Shifts
 - `GET /shifts` - Get all available shifts
@@ -129,7 +129,7 @@ react-native-assignment/
 }
 ```
 
-## 🎨 UI Components
+##  UI Components
 
 ### Main Navigation
 - **Tab Navigation** Switch between Available Shifts and My Shifts
